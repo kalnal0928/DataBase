@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>은행 데이터베이스 모델 변환</title>
+    <style>
+        body {
+            font-family: 'Malgun Gothic', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .title {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 40px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .model-section {
+            margin-bottom: 50px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .hierarchical {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        .network {
+            border-left: 5px solid #f39c12;
+        }
+        
+        .relational {
+            border-left: 5px solid #27ae60;
+        }
+        
+        .model-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .hierarchical .model-title {
+            color: #e74c3c;
+        }
+        
+        .network .model-title {
+            color: #f39c12;
+        }
+        
+        .relational .model-title {
+            color: #27ae60;
+        }
+        
+        .diagram-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            min-height: 300px;
+            align-items: center;
+        }
+        
+        .hierarchical-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+            gap: 40px;
+            position: relative;
+        }
+        
+        .tree-node {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            position: relative;
+            text-align: center;
+            min-width: 120px;
+        }
+        
+        .leaf-node {
+            background: linear-gradient(45deg, #2ecc71, #27ae60);
+            padding: 8px 15px;
+            font-size: 0.9em;
+        }
+        
+        .network-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+        
+        .network-level {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+        
+        .network-node {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            text-align: center;
+            position: relative;
+        }
+        
+        .network-connection {
+            width: 2px;
+            height: 30px;
+            background: #f39c12;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .connection-line {
+            position: absolute;
+            height: 2px;
+            background: #34495e;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .table-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .table-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .table-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            border: 2px solid #27ae60;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        th {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            color: white;
+            font-size: 1em;
+        }
+        
+        td {
+            background: #f8f9fa;
+            color: #2c3e50;
+        }
+        
+        .explanation {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .feature-list {
+            margin: 15px 0;
+        }
+        
+        .feature-list li {
+            margin: 8px 0;
+            padding-left: 10px;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+        
+        .svg-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .relationship-line {
+            stroke: #34495e;
+            stroke-width: 2;
+            fill: none;
+            marker-end: url(#arrowhead);
+        }
+        
+        .node-text {
+            font-size: 12px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">은행 데이터베이스 모델 변환</h1>
+        
+        <!-- 원본 계층적 모델 -->
+        <div class="model-section hierarchical">
+            <div class="model-title">1. 계층적 데이터베이스 모델 (원본)</div>
+            <div class="diagram-container">
+                <div class="hierarchical-tree">
+                    <div class="tree-level">
+                        <div class="tree-node">은행 루트</div>
+                    </div>
+                    <div class="tree-level">
+                        <div class="tree-node">이순신<br>대구 수성동</div>
+                        <div class="tree-node">안중근<br>서울 신촌</div>
+                        <div class="tree-node">김영삼<br>대전 둔산동</div>
+                    </div>
+                    <div class="tree-level">
+                        <div class="leaf-node">101<br>500</div>
+                        <div class="leaf-node">101<br>500</div>
+                        <div class="leaf-node">103<br>1000</div>
+                        <div class="leaf-node">103<br>1000</div>
+                        <div class="leaf-node">105<br>700</div>
+                    </div>
+                </div>
+            </div>
+            <div class="explanation">
+                <strong>특징:</strong>
+                <ul class="feature-list">
+                    <li>트리 구조로 데이터가 조직됨</li>
+                    <li>각 고객은 하나의 부모 노드를 가짐</li>
+                    <li>고객 아래에 계좌 정보가 종속적으로 저장</li>
+                    <li>데이터 접근 시 루트에서 시작하여 경로를 따라 이동</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 네트워크 모델 -->
+        <div class="model-section network">
+            <div class="model-title">2. 네트워크 데이터베이스 모델</div>
+            <div class="diagram-container">
+                <svg width="800" height="400" viewBox="0 0 800 400">
+                    <!-- 고객 레코드 타입 -->
+                    <rect x="50" y="50" width="120" height="60" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                    <text x="110" y="75" class="node-text" fill="white">고객</text>
+                    <text x="110" y="90" class="node-text" fill="white">레코드타입</text>
+                    
+                    <!-- 계좌 레코드 타입 -->
+                    <rect x="50" y="200" width="120" height="60" fill="#f39c12" stroke="#e67e22" stroke-width="2" rx="5"/>
+                    <text x="110" y="225" class="node-text" fill="white">계좌</text>
+                    <text x="110" y="240" class="node-text" fill="white">레코드타입</text>
+                    
+                    <!-- 고객 인스턴스들 -->
+                    <rect x="250" y="20" width="150" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                    <text x="325" y="45" class="node-text" fill="white">이순신,대구,수성동</text>
+                    
+                    <rect x="250" y="80" width="150" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                    <text x="325" y="105" class="node-text" fill="white">안중근,서울,신촌</text>
+                    
+                    <rect x="250" y="140" width="150" height="40" fill="#3498db" stroke="#2980b9" stroke-width="2" rx="5"/>
+                    <text x="325" y="165" class="node-text" fill="white">김영삼,대전,둔산동</text>
+                    
+                    <!-- 계좌 인스턴스들 -->
+                    <rect x="500" y="50" width="80" height="30" fill="#2ecc71" stroke="#27ae60" stroke-width="2" rx="5"/>
+                    <text x="540" y="70" class="node-text" fill="white">101,500</text>
+                    
+                    <rect x="500" y="120" width="80" height="30" fill="#2ecc71" stroke="#27ae60" stroke-width="2" rx="5"/>
+                    <text x="540" y="140" class="node-text" fill="white">103,1000</text>
+                    
+                    <rect x="500" y="190" width="80" height="30" fill="#2ecc71" stroke="#27ae60" stroke-width="2" rx="5"/>
+                    <text x="540" y="210" class="node-text" fill="white">105,700</text>
+                    
+                    <!-- 세트 관계 화살표들 -->
+                    <defs>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                            <polygon points="0 0, 10 3.5, 0 7" fill="#34495e"/>
+                        </marker>
+                    </defs>
+                    
+                    <!-- 고객-계좌 관계선들 -->
+                    <line x1="400" y1="40" x2="500" y2="65" class="relationship-line"/>
+                    <line x1="400" y1="100" x2="500" y2="135" class="relationship-line"/>
+                    <line x1="400" y1="100" x2="500" y2="135" class="relationship-line"/>
+                    <line x1="400" y1="160" x2="500" y2="135" class="relationship-line"/>
+                    <line x1="400" y1="160" x2="500" y2="205" class="relationship-line"/>
+                    
+                    <!-- 세트 타입 레이블 -->
+                    <text x="450" y="30" class="node-text" fill="#e74c3c">보유</text>
+                    <text x="450" y="45" class="node-text" fill="#e74c3c">세트타입</text>
+                </svg>
+            </div>
+            <div class="explanation">
+                <strong>특징:</strong>
+                <ul class="feature-list">
+                    <li><span class="highlight">세트 타입</span>으로 레코드 간 관계 정의</li>
+                    <li>고객(Owner) ↔ 계좌(Member) 관계</li>
+                    <li>다대다 관계 표현 가능 (한 계좌를 여러 고객이 공유 가능)</li>
+                    <li>포인터를 통한 네비게이션</li>
+                    <li>계층형보다 유연하지만 복잡한 구조</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 관계형 모델 -->
+        <div class="model-section relational">
+            <div class="model-title">3. 관계형 데이터베이스 모델</div>
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <div class="table-title">고객 테이블</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>고객ID</th>
+                                <th>고객명</th>
+                                <th>시</th>
+                                <th>동</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C001</td>
+                                <td>이순신</td>
+                                <td>대구</td>
+                                <td>수성동</td>
+                            </tr>
+                            <tr>
+                                <td>C002</td>
+                                <td>안중근</td>
+                                <td>서울</td>
+                                <td>신촌</td>
+                            </tr>
+                            <tr>
+                                <td>C003</td>
+                                <td>김영삼</td>
+                                <td>대전</td>
+                                <td>둔산동</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-wrapper">
+                    <div class="table-title">계좌 테이블</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>계좌번호</th>
+                                <th>예금액</th>
+                                <th>고객ID</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>101</td>
+                                <td>500</td>
+                                <td>C001</td>
+                            </tr>
+                            <tr>
+                                <td>101</td>
+                                <td>500</td>
+                                <td>C002</td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>1000</td>
+                                <td>C002</td>
+                            </tr>
+                            <tr>
+                                <td>103</td>
+                                <td>1000</td>
+                                <td>C003</td>
+                            </tr>
+                            <tr>
+                                <td>105</td>
+                                <td>700</td>
+                                <td>C003</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="table-container" style="margin-top: 30px;">
+                <div class="table-wrapper">
+                    <div class="table-title">고객_계좌 관계 테이블 (다대다 관계 해결)</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>고객ID</th>
+                                <th>계좌번호</th>
+                                <th>개설일</th>
+                                <th>권한</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>C001</td>
+                                <td>101</td>
+                                <td>2023-01-15</td>
+                                <td>주계좌</td>
+                            </tr>
+                            <tr>
+                                <td>C002</td>
+                                <td>101</td>
+                                <td>2023-01-15</td>
+                                <td>공동계좌</td>
+                            </tr>
+                            <tr>
+                                <td>C002</td>
+                                <td>103</td>
+                                <td>2023-02-20</td>
+                                <td>주계좌</td>
+                            </tr>
+                            <tr>
+                                <td>C003</td>
+                                <td>103</td>
+                                <td>2023-02-20</td>
+                                <td>공동계좌</td>
+                            </tr>
+                            <tr>
+                                <td>C003</td>
+                                <td>105</td>
+                                <td>2023-03-10</td>
+                                <td>주계좌</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="explanation">
+                <strong>특징:</strong>
+                <ul class="feature-list">
+                    <li><span class="highlight">정규화</span>를 통한 데이터 중복 제거</li>
+                    <li>기본키(Primary Key)와 외래키(Foreign Key)로 관계 정의</li>
+                    <li>SQL을 통한 유연한 데이터 조작</li>
+                    <li>JOIN 연산으로 테이블 간 관계 조회</li>
+                    <li>ACID 특성 보장으로 데이터 무결성 유지</li>
+                    <li>다대다 관계는 별도의 관계 테이블로 해결</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- 모델 비교 -->
+        <div class="model-section">
+            <div class="model-title" style="color: #9b59b6;">📊 세 모델의 비교</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>구분</th>
+                            <th>계층적 모델</th>
+                            <th>네트워크 모델</th>
+                            <th>관계형 모델</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>구조</strong></td>
+                            <td>트리 구조</td>
+                            <td>그래프 구조</td>
+                            <td>테이블 구조</td>
+                        </tr>
+                        <tr>
+                            <td><strong>관계</strong></td>
+                            <td>1:N만 가능</td>
+                            <td>M:N 가능</td>
+                            <td>모든 관계 가능</td>
+                        </tr>
+                        <tr>
+                            <td><strong>접근방법</strong></td>
+                            <td>루트부터 순차</td>
+                            <td>포인터 네비게이션</td>
+                            <td>SQL 질의</td>
+                        </tr>
+                        <tr>
+                            <td><strong>유연성</strong></td>
+                            <td>낮음</td>
+                            <td>보통</td>
+                            <td>높음</td>
+                        </tr>
+                        <tr>
+                            <td><strong>복잡도</strong></td>
+                            <td>단순</td>
+                            <td>복잡</td>
+                            <td>보통</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
