@@ -377,6 +377,7 @@
             <button class="tab active" onclick="showTab('problem1')">문제 1: 데이터베이스 모델</button>
             <button class="tab" onclick="showTab('problem2')">문제 2: 관계대수 연산</button>
             <button class="tab" onclick="showTab('problem3')">문제 3: SQL 질의문</button>
+            <button class="tab" onclick="showTab('problem4')">문제 4: 계층형 모델 변환</button>
         </div>
         
         <!-- 콘텐츠 영역 -->
@@ -1013,6 +1014,88 @@
                 </div>
             </div>
         </div>
+            <!-- 문제 4: 계층형 모델 변환 -->
+            <div id="problem4" class="tab-content">
+                <h1 class="title">계층적 모델을 관계형 모델과 네트워크 모델로 변환</h1>
+                
+                <div class="model-section relational">
+                    <div class="model-title">1. 관계형 모델 (Relational Model)</div>
+                    <div class="table-section">
+                        <div class="table-container">
+                            <div class="table-title">고객 (Customer) 테이블</div>
+                            <table>
+                                <thead><tr><th>고객명</th><th>시</th><th>동</th></tr></thead>
+                                <tbody>
+                                    <tr><td>이순신</td><td>대구</td><td>수성동</td></tr>
+                                    <tr><td>안중근</td><td>서울</td><td>신촌</td></tr>
+                                    <tr><td>김영삼</td><td>대전</td><td>둔산동</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-title">계좌 (Account) 테이블</div>
+                            <table>
+                                <thead><tr><th>계좌번호</th><th>고객명</th><th>예금액</th></tr></thead>
+                                <tbody>
+                                    <tr><td>101</td><td>이순신</td><td>500</td></tr>
+                                    <tr><td>101</td><td>안중근</td><td>500</td></tr>
+                                    <tr><td>103</td><td>안중근</td><td>1000</td></tr>
+                                    <tr><td>103</td><td>김영삼</td><td>1000</td></tr>
+                                    <tr><td>105</td><td>김영삼</td><td>700</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="explanation">
+                        <strong>관계 (Relationships):</strong>
+                        <ul class="feature-list">
+                            <li>고객 1 : N 계좌 (한 고객은 여러 계좌를 가질 수 있음)</li>
+                            <li>외래키: 계좌.고객명 → 고객.고객명</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="model-section network">
+                    <div class="model-title">2. 네트워크 모델 (Network Model)</div>
+                     <div class="explanation">
+                        <strong>레코드 타입:</strong>
+                        <ul class="feature-list">
+                            <li>고객 (Customer)</li>
+                            <li>계좌 (Account)</li>
+                        </ul>
+                        <strong>집합 관계:</strong>
+                        <ul class="feature-list">
+                            <li>CUSTOMER_ACCOUNT (고객 → 계좌): 1:N</li>
+                        </ul>
+                         <strong>네트워크 연결:</strong>
+                        <ul class="feature-list">
+                            <li>이순신 ← → 계좌 101(500원)</li>
+                            <li>안중근 ← → 계좌 101(500원)</li>
+                            <li>안중근 ← → 계좌 103(1000원)</li>
+                            <li>김영삼 ← → 계좌 103(1000원)</li>
+                            <li>김영삼 ← → 계좌 105(700원)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="model-section">
+                    <div class="model-title" style="color: #9b59b6;">모델 비교</div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr><th>특징</th><th>계층적 모델</th><th>관계형 모델</th><th>네트워크 모델</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr><td><strong>구조</strong></td><td>트리 구조</td><td>테이블 기반</td><td>그래프 구조</td></tr>
+                                <tr><td><strong>관계</strong></td><td>1:N만 가능</td><td>1:1, 1:N, N:M 모두 가능</td><td>1:N, N:M 가능</td></tr>
+                                <tr><td><strong>데이터 중복</strong></td><td>높음</td><td>낮음</td><td>중간</td></tr>
+                                <tr><td><strong>질의 복잡도</strong></td><td>높음</td><td>낮음</td><td>중간</td></tr>
+                                <tr><td><strong>유연성</strong></td><td>낮음</td><td>높음</td><td>중간</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
     </div>
     
     <script>
