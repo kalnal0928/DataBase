@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>관계대수 연산 결과</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #4a5568;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        
+        .original-relations {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin: 30px 0;
+        }
+        
+        .relation {
+            border: 2px solid #4a5568;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .relation th {
+            background: #4a5568;
+            color: white;
+            padding: 12px 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .relation td {
+            border: 1px solid #cbd5e0;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        
+        .operation {
+            margin: 40px 0;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8fafc;
+        }
+        
+        .operation h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .formula {
+            background: #bee3f8;
+            border: 2px solid #4299e1;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .explanation {
+            background: #e6fffa;
+            border-left: 4px solid #38b2ac;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .result-table {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .union {
+            background: #c6f6d5;
+            border-color: #48bb78;
+        }
+        
+        .difference {
+            background: #fed7d7;
+            border-color: #f56565;
+        }
+        
+        .cartesian {
+            background: #fef5e7;
+            border-color: #ed8936;
+        }
+        
+        .selection {
+            background: #e9d8fd;
+            border-color: #9f7aea;
+        }
+        
+        .result-relation {
+            border: 2px solid #4a5568;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .result-relation th {
+            background: #2d3748;
+            color: white;
+            padding: 12px 15px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        .result-relation td {
+            border: 1px solid #cbd5e0;
+            padding: 10px 15px;
+            text-align: center;
+        }
+        
+        .empty-result {
+            background: #fed7d7;
+            border: 2px dashed #f56565;
+            padding: 20px;
+            text-align: center;
+            color: #742a2a;
+            font-weight: bold;
+            border-radius: 8px;
+        }
+        
+        .note {
+            background: #fff5f5;
+            border: 1px solid #feb2b2;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            color: #742a2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 관계대수 연산 결과</h1>
+        
+        <div class="original-relations">
+            <div>
+                <h3 style="text-align: center; color: #2d3748;">릴레이션 R</h3>
+                <table class="relation">
+                    <thead>
+                        <tr>
+                            <th>A</th>
+                            <th>B</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>a1</td>
+                            <td>b1</td>
+                        </tr>
+                        <tr>
+                            <td>a2</td>
+                            <td>b1</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div>
+                <h3 style="text-align: center; color: #2d3748;">릴레이션 S</h3>
+                <table class="relation">
+                    <thead>
+                        <tr>
+                            <th>B</th>
+                            <th>C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>b1</td>
+                            <td>c1</td>
+                        </tr>
+                        <tr>
+                            <td>b1</td>
+                            <td>c2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="operation union">
+            <h3>① R ∪ S (합집합, Union)</h3>
+            <div class="formula">R ∪ S</div>
+            <div class="explanation">
+                <strong>⚠️ 주의:</strong> 합집합 연산은 두 릴레이션이 <strong>동일한 스키마</strong>를 가져야 합니다.<br>
+                R의 스키마: (A, B)<br>
+                S의 스키마: (B, C)<br>
+                → 스키마가 다르므로 합집합 연산이 <strong>불가능</strong>합니다.
+            </div>
+            <div class="empty-result">
+                연산 불가능 (스키마 불일치)
+            </div>
+        </div>
+        
+        <div class="operation difference">
+            <h3>② R - S (차집합, Difference)</h3>
+            <div class="formula">R - S</div>
+            <div class="explanation">
+                <strong>⚠️ 주의:</strong> 차집합 연산도 두 릴레이션이 <strong>동일한 스키마</strong>를 가져야 합니다.<br>
+                R의 스키마: (A, B)<br>
+                S의 스키마: (B, C)<br>
+                → 스키마가 다르므로 차집합 연산이 <strong>불가능</strong>합니다.
+            </div>
+            <div class="empty-result">
+                연산 불가능 (스키마 불일치)
+            </div>
+        </div>
+        
+        <div class="operation cartesian">
+            <h3>③ R × S (카티션 곱, Cartesian Product)</h3>
+            <div class="formula">R × S</div>
+            <div class="explanation">
+                <strong>설명:</strong> 카티션 곱은 R의 각 튜플과 S의 각 튜플을 모두 조합합니다.<br>
+                결과 스키마: (A, B, B, C) → 속성명 중복으로 (A, R.B, S.B, C)로 표현<br>
+                튜플 개수: |R| × |S| = 2 × 2 = 4개
+            </div>
+            <div class="result-table">
+                <table class="result-relation">
+                    <thead>
+                        <tr>
+                            <th>A</th>
+                            <th>R.B</th>
+                            <th>S.B</th>
+                            <th>C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>a1</td>
+                            <td>b1</td>
+                            <td>b1</td>
+                            <td>c1</td>
+                        </tr>
+                        <tr>
+                            <td>a1</td>
+                            <td>b1</td>
+                            <td>b1</td>
+                            <td>c2</td>
+                        </tr>
+                        <tr>
+                            <td>a2</td>
+                            <td>b1</td>
+                            <td>b1</td>
+                            <td>c1</td>
+                        </tr>
+                        <tr>
+                            <td>a2</td>
+                            <td>b1</td>
+                            <td>b1</td>
+                            <td>c2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="operation selection">
+            <h3>④ σB='b1'(S) (선택, Selection)</h3>
+            <div class="formula">σ<sub>B='b1'</sub>(S)</div>
+            <div class="explanation">
+                <strong>설명:</strong> 릴레이션 S에서 B 속성 값이 'b1'인 튜플들을 선택합니다.<br>
+                S의 모든 튜플에서 B='b1'이므로 모든 튜플이 선택됩니다.
+            </div>
+            <div class="result-table">
+                <table class="result-relation">
+                    <thead>
+                        <tr>
+                            <th>B</th>
+                            <th>C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>b1</td>
+                            <td>c1</td>
+                        </tr>
+                        <tr>
+                            <td>b1</td>
+                            <td>c2</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="note">
+                <strong>결과:</strong> S와 동일한 릴레이션 (모든 튜플이 조건을 만족)
+            </div>
+        </div>
+        
+        <div style="background: #edf2f7; border-radius: 10px; padding: 20px; margin-top: 30px;">
+            <h3 style="color: #2d3748;">📝 요약</h3>
+            <ul style="line-height: 1.8;">
+                <li><strong>R ∪ S:</strong> 연산 불가능 (스키마 불일치)</li>
+                <li><strong>R - S:</strong> 연산 불가능 (스키마 불일치)</li>
+                <li><strong>R × S:</strong> 4개 튜플 (A, R.B, S.B, C)</li>
+                <li><strong>σ<sub>B='b1'</sub>(S):</strong> S와 동일 (2개 튜플)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
