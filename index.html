@@ -1271,81 +1271,73 @@
                 <div class="query-section">
                     <div class="query-title">(a) 위의 두 테이블을 만드시오.</div>
                     <div class="sql-code"><span class="sql-comment">-- 부서 테이블 생성</span>
-<span class="sql-keyword">CREATE TABLE</span> 부서 (
-    부서번호 <span class="sql-keyword">VARCHAR</span>(10) <span class="sql-keyword">PRIMARY KEY</span>,
-    부서명 <span class="sql-keyword">VARCHAR</span>(50) <span class="sql-keyword">NOT NULL</span>,
-    예산 <span class="sql-keyword">INT</span>
-);
+<span class="sql-keyword">CREATE TABLE</span> 부서 (                          <span class="sql-comment">-- '부서'라는 이름의 테이블을 생성</span>
+    부서번호 <span class="sql-keyword">VARCHAR</span>(10) <span class="sql-keyword">PRIMARY KEY</span>,         <span class="sql-comment">-- 부서번호 컬럼: 최대 10자의 문자열, 기본키로 설정</span>
+    부서명 <span class="sql-keyword">VARCHAR</span>(50) <span class="sql-keyword">NOT NULL</span>,             <span class="sql-comment">-- 부서명 컬럼: 최대 50자의 문자열, 필수 입력(NULL 불가)</span>
+    예산 <span class="sql-keyword">INT</span>                                 <span class="sql-comment">-- 예산 컬럼: 정수형 데이터</span>
+);                                          <span class="sql-comment">-- 테이블 생성 구문 종료</span>
 
 <span class="sql-comment">-- 부서 데이터 삽입</span>
-<span class="sql-keyword">INSERT INTO</span> 부서 (부서번호, 부서명, 예산) <span class="sql-keyword">VALUES</span>
-(<span class="sql-string">'D001'</span>, <span class="sql-string">'총무부'</span>, 8000),
-(<span class="sql-string">'D002'</span>, <span class="sql-string">'인사부'</span>, 12000),
-(<span class="sql-string">'D003'</span>, <span class="sql-string">'기획부'</span>, 9000);
+<span class="sql-keyword">INSERT INTO</span> 부서 (부서번호, 부서명, 예산) <span class="sql-keyword">VALUES</span>  <span class="sql-comment">-- 부서 테이블의 지정된 컬럼들에 값을 삽입</span>
+(<span class="sql-string">'D001'</span>, <span class="sql-string">'총무부'</span>, 8000),                    <span class="sql-comment">-- 첫 번째 행: D001번 총무부, 예산 8000</span>
+(<span class="sql-string">'D002'</span>, <span class="sql-string">'인사부'</span>, 12000),                   <span class="sql-comment">-- 두 번째 행: D002번 인사부, 예산 12000</span>
+(<span class="sql-string">'D003'</span>, <span class="sql-string">'기획부'</span>, 9000);                    <span class="sql-comment">-- 세 번째 행: D003번 기획부, 예산 9000</span>
 
 <span class="sql-comment">-- 사원 테이블 생성</span>
-<span class="sql-keyword">CREATE TABLE</span> 사원 (
-    사원번호 <span class="sql-keyword">VARCHAR</span>(10) <span class="sql-keyword">PRIMARY KEY</span>,
-    사원명 <span class="sql-keyword">VARCHAR</span>(50) <span class="sql-keyword">NOT NULL</span>,
-    부서번호 <span class="sql-keyword">VARCHAR</span>(10),
-    월급여 <span class="sql-keyword">INT</span>,
-    근무년수 <span class="sql-keyword">INT</span>,
-    <span class="sql-keyword">FOREIGN KEY</span> (부서번호) <span class="sql-keyword">REFERENCES</span> 부서(부서번호)
-);
+<span class="sql-keyword">CREATE TABLE</span> 사원 (                          <span class="sql-comment">-- '사원'이라는 이름의 테이블을 생성</span>
+    사원번호 <span class="sql-keyword">VARCHAR</span>(10) <span class="sql-keyword">PRIMARY KEY</span>,         <span class="sql-comment">-- 사원번호 컬럼: 최대 10자의 문자열, 기본키로 설정</span>
+    사원명 <span class="sql-keyword">VARCHAR</span>(50) <span class="sql-keyword">NOT NULL</span>,             <span class="sql-comment">-- 사원명 컬럼: 최대 50자의 문자열, 필수 입력(NULL 불가)</span>
+    부서번호 <span class="sql-keyword">VARCHAR</span>(10),                     <span class="sql-comment">-- 부서번호 컬럼: 최대 10자의 문자열 (NULL 허용)</span>
+    월급여 <span class="sql-keyword">INT</span>,                              <span class="sql-comment">-- 월급여 컬럼: 정수형 데이터</span>
+    근무년수 <span class="sql-keyword">INT</span>,                            <span class="sql-comment">-- 근무년수 컬럼: 정수형 데이터</span>
+    <span class="sql-keyword">FOREIGN KEY</span> (부서번호) <span class="sql-keyword">REFERENCES</span> 부서(부서번호)  <span class="sql-comment">-- 외래키 설정: 부서번호가 부서 테이블의 부서번호를 참조</span>
+);                                          <span class="sql-comment">-- 테이블 생성 구문 종료</span>
 
 <span class="sql-comment">-- 사원 데이터 삽입</span>
-<span class="sql-keyword">INSERT INTO</span> 사원 (사원번호, 사원명, 부서번호, 월급여, 근무년수) <span class="sql-keyword">VALUES</span>
-(<span class="sql-string">'E100'</span>, <span class="sql-string">'김영수'</span>, <span class="sql-string">'D001'</span>, 400, 10),
-(<span class="sql-string">'E101'</span>, <span class="sql-string">'백영란'</span>, <span class="sql-string">'D002'</span>, 350, 5),
-(<span class="sql-string">'E102'</span>, <span class="sql-string">'최재훈'</span>, <span class="sql-string">'D002'</span>, 380, 7),
-(<span class="sql-string">'E103'</span>, <span class="sql-string">'이은정'</span>, <span class="sql-string">'D003'</span>, 280, 3);
+<span class="sql-keyword">INSERT INTO</span> 사원 (사원번호, 사원명, 부서번호, 월급여, 근무년수) <span class="sql-keyword">VALUES</span>  <span class="sql-comment">-- 사원 테이블의 지정된 컬럼들에 값을 삽입</span>
+(<span class="sql-string">'E100'</span>, <span class="sql-string">'김영수'</span>, <span class="sql-string">'D001'</span>, 400, 10),          <span class="sql-comment">-- 첫 번째 행: E100번 김영수, D001 부서, 월급여 400, 근무년수 10년</span>
+(<span class="sql-string">'E101'</span>, <span class="sql-string">'백영란'</span>, <span class="sql-string">'D002'</span>, 350, 5),           <span class="sql-comment">-- 두 번째 행: E101번 백영란, D002 부서, 월급여 350, 근무년수 5년</span>
+(<span class="sql-string">'E102'</span>, <span class="sql-string">'최재훈'</span>, <span class="sql-string">'D002'</span>, 380, 7),           <span class="sql-comment">-- 세 번째 행: E102번 최재훈, D002 부서, 월급여 380, 근무년수 7년</span>
+(<span class="sql-string">'E103'</span>, <span class="sql-string">'이은정'</span>, <span class="sql-string">'D003'</span>, 280, 3);           <span class="sql-comment">-- 네 번째 행: E103번 이은정, D003 부서, 월급여 280, 근무년수 3년</span>
                     </div>
                 </div>
 
                 <div class="query-section">
                     <div class="query-title">(b) 사원번호가 'E103'인 사원이 속한 부서명을 출력하시오.</div>
-                    <div class="sql-code"><span class="sql-comment">-- (b) 사원번호가 'E103'인 사원이 속한 부서명을 출력하시오.</span>
-<span class="sql-keyword">SELECT</span> 부서.부서명
-<span class="sql-keyword">FROM</span> 사원
-<span class="sql-keyword">JOIN</span> 부서
-<span class="sql-keyword">ON</span> 사원.부서번호 = 부서.부서번호
-<span class="sql-keyword">WHERE</span> 사원.사원번호 = <span class="sql-string">'E103'</span>;
-                    </div>
+                    <div class="sql-code"><span class="sql-keyword">SELECT</span> 부서.부서명                            <span class="sql-comment">-- SELECT절: 부서 테이블의 부서명 컬럼을 선택하여 출력</span>
+<span class="sql-keyword">FROM</span> 사원                                   <span class="sql-comment">-- FROM절: 사원 테이블을 기본 테이블로 지정</span>
+<span class="sql-keyword">JOIN</span> 부서                                   <span class="sql-comment">-- JOIN절: 부서 테이블과 조인(결합)을 수행</span>
+<span class="sql-keyword">ON</span> 사원.부서번호 = 부서.부서번호              <span class="sql-comment">-- ON절: 조인 조건 - 사원 테이블의 부서번호와 부서 테이블의 부서번호가 같은 행들을 연결</span>
+<span class="sql-keyword">WHERE</span> 사원.사원번호 = <span class="sql-string">'E103'</span>;                <span class="sql-comment">-- WHERE절: 조건 - 사원 테이블의 사원번호가 'E103'인 행만 필터링</span></div>
                 </div>
 
                 <div class="query-section">
                     <div class="query-title">(c) 부서명별로 사원들의 평균 월급여를 출력하시오.</div>
-                    <div class="sql-code"><span class="sql-comment">-- (c) 부서명별로 사원들의 평균 월급여를 출력하시오.</span>
-<span class="sql-keyword">SELECT</span> 부서.부서명, <span class="sql-keyword">AVG</span>(사원.월급여) <span class="sql-keyword">AS</span> 평균월급여
-<span class="sql-keyword">FROM</span> 사원
-<span class="sql-keyword">JOIN</span> 부서
-<span class="sql-keyword">ON</span> 사원.부서번호 = 부서.부서번호
-<span class="sql-keyword">GROUP BY</span> 부서.부서명;
-                    </div>
+                    <div class="sql-code"><span class="sql-keyword">SELECT</span> 부서.부서명, <span class="sql-keyword">AVG</span>(사원.월급여) <span class="sql-keyword">AS</span> 평균월급여  <span class="sql-comment">-- SELECT절: 부서명과 월급여의 평균값을 출력 (AS로 별칭 지정)</span>
+<span class="sql-keyword">FROM</span> 사원                                   <span class="sql-comment">-- FROM절: 사원 테이블을 기본 테이블로 지정</span>
+<span class="sql-keyword">JOIN</span> 부서                                   <span class="sql-comment">-- JOIN절: 부서 테이블과 조인을 수행</span>
+<span class="sql-keyword">ON</span> 사원.부서번호 = 부서.부서번호              <span class="sql-comment">-- ON절: 조인 조건 - 부서번호가 같은 행들을 연결</span>
+<span class="sql-keyword">GROUP BY</span> 부서.부서명;                        <span class="sql-comment">-- GROUP BY절: 부서명별로 그룹화하여 각 그룹의 평균을 계산</span></div>
                 </div>
 
                 <div class="query-section">
                     <div class="query-title">(d) '백영란'과 같은 부서에 근무하는 사원의 사원명과 부서명을 출력하시오.</div>
-                    <div class="sql-code"><span class="sql-comment">-- (d) '백영란'과 같은 부서에 근무하는 사원의 사원명과 부서명을 출력하시오.</span>
-<span class="sql-keyword">SELECT</span> s2.사원명, 부서.부서명
-<span class="sql-keyword">FROM</span> 사원 s1
-<span class="sql-keyword">JOIN</span> 사원 s2
-<span class="sql-keyword">ON</span> s1.부서번호 = s2.부서번호
-<span class="sql-keyword">JOIN</span> 부서
-<span class="sql-keyword">ON</span> s2.부서번호 = 부서.부서번호
-<span class="sql-keyword">WHERE</span> s1.사원명 = <span class="sql-string">'백영란'</span>;
-                    </div>
+                    <div class="sql-code"><span class="sql-keyword">SELECT</span> s2.사원명, 부서.부서명                 <span class="sql-comment">-- SELECT절: 사원명과 부서명을 출력</span>
+<span class="sql-keyword">FROM</span> 사원 s1                                <span class="sql-comment">-- FROM절: 사원 테이블을 s1 별칭으로 지정 (백영란을 찾기 위한 테이블)</span>
+<span class="sql-keyword">JOIN</span> 사원 s2                                <span class="sql-comment">-- JOIN절: 같은 사원 테이블을 s2 별칭으로 다시 조인 (같은 부서 사원들을 찾기 위한 테이블)</span>
+<span class="sql-keyword">ON</span> s1.부서번호 = s2.부서번호                  <span class="sql-comment">-- ON절: 조인 조건 - 같은 부서번호를 가진 사원들을 연결</span>
+<span class="sql-keyword">JOIN</span> 부서                                   <span class="sql-comment">-- JOIN절: 부서 테이블과 조인하여 부서명을 가져옴</span>
+<span class="sql-keyword">ON</span> s2.부서번호 = 부서.부서번호                <span class="sql-comment">-- ON절: s2의 부서번호와 부서 테이블의 부서번호가 같은 행들을 연결</span>
+<span class="sql-keyword">WHERE</span> s1.사원명 = <span class="sql-string">'백영란'</span>;                   <span class="sql-comment">-- WHERE절: s1에서 백영란을 찾는 조건</span></div>
                 </div>
 
                 <div class="query-section">
                     <div class="query-title">(e) 모든 사원의 근무년수를 1년 증가시킨 후에 사원 테이블을 출력하시오.</div>
-                    <div class="sql-code"><span class="sql-comment">-- (e) 모든 사원의 근무년수를 1년 증가시킨 후에 사원 테이블을 출력하시오.</span>
-<span class="sql-keyword">UPDATE</span> 사원
-<span class="sql-keyword">SET</span> 근무년수 = 근무년수 + 1;
+                    <div class="sql-code"><span class="sql-keyword">UPDATE</span> 사원                                 <span class="sql-comment">-- UPDATE절: 사원 테이블의 데이터를 수정</span>
+<span class="sql-keyword">SET</span> 근무년수 = 근무년수 + 1;                 <span class="sql-comment">-- SET절: 근무년수 컬럼의 값을 현재 값에서 1을 더한 값으로 변경</span>
 
 <span class="sql-comment">-- 수정된 사원 테이블 출력</span>
-<span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> 사원;
-                    </div>
+<span class="sql-keyword">SELECT</span> * <span class="sql-keyword">FROM</span> 사원;                         <span class="sql-comment">-- SELECT절: 사원 테이블의 모든 컬럼(*) 출력</span></div>
                 </div>
             </div>
     </div>
