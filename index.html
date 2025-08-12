@@ -1337,9 +1337,9 @@ FROM 사원                                   -- FROM절: 사원 테이블을 �
 JOIN 부서                                   -- JOIN절: 부서 테이블과 조인하여 부서명을 가져옴
 ON 사원.부서번호 = 부서.부서번호              -- ON절: 부서번호가 같은 행들을 연결
 WHERE 사원.부서번호 = (                      -- WHERE절: 조건 시작
-    SELECT 부서번호                         -- 서브쿼리: 백영란의 부서번호를 찾음
-    FROM 사원                               -- 사원 테이블에서
-    WHERE 사원명 = '백영란'                  -- 백영란의 부서번호를 가져옴
+&nbsp;&nbsp;&nbsp;&nbsp;SELECT 부서번호                         -- 서브쿼리: 백영란의 부서번호를 찾음
+&nbsp;&nbsp;&nbsp;&nbsp;FROM 사원                               -- 사원 테이블에서
+&nbsp;&nbsp;&nbsp;&nbsp;WHERE 사원명 = '백영란'                  -- 백영란의 부서번호를 가져옴
 );</div>
                 </div>
 
