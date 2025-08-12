@@ -379,6 +379,7 @@
             <button class="tab" onclick="showTab('problem3')">문제 3: SQL 질의문</button>
             <button class="tab" onclick="showTab('problem4')">문제 1-1: 데이터베이스 모델</button>
             <button class="tab" onclick="showTab('problem5')">문제 2-2: 관계대수 연산</button>
+            <button class="tab" onclick="showTab('problem6')">문제 3-1: SQL 질의문</button>
         </div>
         
         <!-- 콘텐츠 영역 -->
@@ -1184,6 +1185,167 @@
                                 <tr><td>b1</td><td>c2</td></tr>
                             </tbody>
                         </table>
+                    </div>
+                </div>
+            </div>
+            <div id="problem6" class="tab-content">
+                <h1 class="title">문제 3-1: SQL 질의문</h1>
+                
+                <div class="table-section">
+                    <div class="table-container">
+                        <div class="table-title">부서 테이블</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>부서번호</th>
+                                    <th>부서명</th>
+                                    <th>예산</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>D001</td>
+                                    <td>총무부</td>
+                                    <td>8000</td>
+                                </tr>
+                                <tr>
+                                    <td>D002</td>
+                                    <td>인사부</td>
+                                    <td>12000</td>
+                                </tr>
+                                <tr>
+                                    <td>D003</td>
+                                    <td>기획부</td>
+                                    <td>9000</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-title">사원 테이블</div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>사원번호</th>
+                                    <th>사원명</th>
+                                    <th>부서번호</th>
+                                    <th>월급여</th>
+                                    <th>근무년수</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>E100</td>
+                                    <td>김영수</td>
+                                    <td>D001</td>
+                                    <td>400</td>
+                                    <td>10</td>
+                                </tr>
+                                <tr>
+                                    <td>E101</td>
+                                    <td>백영란</td>
+                                    <td>D002</td>
+                                    <td>350</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>E102</td>
+                                    <td>최재훈</td>
+                                    <td>D002</td>
+                                    <td>380</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>E103</td>
+                                    <td>이은정</td>
+                                    <td>D003</td>
+                                    <td>280</td>
+                                    <td>3</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="query-section">
+                    <div class="query-title">(a) 위의 두 테이블을 만드시오.</div>
+                    <div class="sql-code">
+-- 부서 테이블 생성
+CREATE TABLE 부서 (
+    부서번호 VARCHAR(10) PRIMARY KEY,
+    부서명 VARCHAR(50) NOT NULL,
+    예산 INT
+);
+
+-- 부서 데이터 삽입
+INSERT INTO 부서 (부서번호, 부서명, 예산) VALUES
+('D001', '총무부', 8000),
+('D002', '인사부', 12000),
+('D003', '기획부', 9000);
+
+-- 사원 테이블 생성
+CREATE TABLE 사원 (
+    사원번호 VARCHAR(10) PRIMARY KEY,
+    사원명 VARCHAR(50) NOT NULL,
+    부서번호 VARCHAR(10),
+    월급여 INT,
+    근무년수 INT,
+    FOREIGN KEY (부서번호) REFERENCES 부서(부서번호)
+);
+
+-- 사원 데이터 삽입
+INSERT INTO 사원 (사원번호, 사원명, 부서번호, 월급여, 근무년수) VALUES
+('E100', '김영수', 'D001', 400, 10),
+('E101', '백영란', 'D002', 350, 5),
+('E102', '최재훈', 'D002', 380, 7),
+('E103', '이은정', 'D003', 280, 3);
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <div class="query-title">(b) 사원번호가 'E103'인 사원이 속한 부서명을 출력하시오.</div>
+                    <div class="sql-code">
+SELECT 부서.부서명
+FROM 사원
+JOIN 부서
+ON 사원.부서번호 = 부서.부서번호
+WHERE 사원.사원번호 = 'E103';
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <div class="query-title">(c) 부서명별로 사원들의 평균 월급여를 출력하시오.</div>
+                    <div class="sql-code">
+SELECT 부서.부서명, AVG(사원.월급여) AS 평균월급여
+FROM 사원
+JOIN 부서
+ON 사원.부서번호 = 부서.부서번호
+GROUP BY 부서.부서명;
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <div class="query-title">(d) '백영란'과 같은 부서에 근무하는 사원의 사원명과 부서명을 출력하시오.</div>
+                    <div class="sql-code">
+SELECT s2.사원명, 부서.부서명
+FROM 사원 s1
+JOIN 사원 s2
+ON s1.부서번호 = s2.부서번호
+JOIN 부서
+ON s2.부서번호 = 부서.부서번호
+WHERE s1.사원명 = '백영란';
+                    </div>
+                </div>
+
+                <div class="query-section">
+                    <div class="query-title">(e) 모든 사원의 근무년수를 1년 증가시킨 후에 사원 테이블을 출력하시오.</div>
+                    <div class="sql-code">
+UPDATE 사원
+SET 근무년수 = 근무년수 + 1;
+
+-- 수정된 사원 테이블 출력
+SELECT * FROM 사원;
                     </div>
                 </div>
             </div>
