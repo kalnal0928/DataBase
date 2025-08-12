@@ -1322,6 +1322,7 @@
 
                 <div class="query-section">
                     <div class="query-title">(d) '백영란'과 같은 부서에 근무하는 사원의 사원명과 부서명을 출력하시오.</div>
+                    <div class="query-text">방법 1: 셀프 조인 사용</div>
                     <div class="sql-code"><span class="sql-keyword">SELECT</span> s2.사원명, 부서.부서명                 <span class="sql-comment">-- SELECT절: 사원명과 부서명을 출력</span>
 <span class="sql-keyword">FROM</span> 사원 s1                                <span class="sql-comment">-- FROM절: 사원 테이블을 s1 별칭으로 지정 (백영란을 찾기 위한 테이블)</span>
 <span class="sql-keyword">JOIN</span> 사원 s2                                <span class="sql-comment">-- JOIN절: 같은 사원 테이블을 s2 별칭으로 다시 조인 (같은 부서 사원들을 찾기 위한 테이블)</span>
@@ -1329,6 +1330,17 @@
 <span class="sql-keyword">JOIN</span> 부서                                   <span class="sql-comment">-- JOIN절: 부서 테이블과 조인하여 부서명을 가져옴</span>
 <span class="sql-keyword">ON</span> s2.부서번호 = 부서.부서번호                <span class="sql-comment">-- ON절: s2의 부서번호와 부서 테이블의 부서번호가 같은 행들을 연결</span>
 <span class="sql-keyword">WHERE</span> s1.사원명 = <span class="sql-string">'백영란'</span>;                   <span class="sql-comment">-- WHERE절: s1에서 백영란을 찾는 조건</span></div>
+                    <div class="query-text" style="margin-top: 20px;">방법 2: 서브쿼리 사용</div>
+                    <div class="sql-code">-- 방법 2: 서브쿼리 사용 (더 간단하고 직관적)
+SELECT 사원.사원명, 부서.부서명                -- SELECT절: 사원명과 부서명을 출력
+FROM 사원                                   -- FROM절: 사원 테이블을 기본으로 지정
+JOIN 부서                                   -- JOIN절: 부서 테이블과 조인하여 부서명을 가져옴
+ON 사원.부서번호 = 부서.부서번호              -- ON절: 부서번호가 같은 행들을 연결
+WHERE 사원.부서번호 = (                      -- WHERE절: 조건 시작
+    SELECT 부서번호                         -- 서브쿼리: 백영란의 부서번호를 찾음
+    FROM 사원                               -- 사원 테이블에서
+    WHERE 사원명 = '백영란'                  -- 백영란의 부서번호를 가져옴
+);</div>
                 </div>
 
                 <div class="query-section">
